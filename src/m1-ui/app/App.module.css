@@ -1,0 +1,125 @@
+h1 {
+    font-size: 85px
+}
+
+
+.logo {
+    margin-top: -75px;
+
+    text-decoration: none;
+    color: white;
+
+
+}
+
+.searchingContainer {
+
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+
+}
+
+.searchingBlock {
+    /*border: solid 1px white;*/
+    padding-top: 50px;
+    flex-direction: row;
+    text-decoration: none;
+}
+
+
+.searchingBlock input {
+    margin-right: 10px;
+    font-size: 25px;
+
+}
+
+.searchingBlock .searchError {
+    border: solid 5px red;
+
+}
+
+.searchingBlock button {
+    font-size: 25px;
+}
+
+.searchingBlock button:active {
+
+}
+
+.searchResult {
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    font-size: 30px;
+}
+
+
+
+.filmPreview a:hover {
+    color: red;
+
+}
+.filmPreview a:active {
+    color: black;
+}
+.filmPreview a {
+    text-decoration: none;
+    color: white
+}
+
+
+.searchResult .filmPreview {
+    padding-bottom: 25px;
+    border-bottom: solid 5px #7780a0;
+    max-width: 400px;
+}
+
+
+.searchResult .filmPreview img {
+    width: 100%;
+    padding-top: 5px;
+
+}
+
+.Title {
+    font-size:35px;
+    padding: 15px 15px;
+    font-weight: bold;
+}
+
+.movieContainer .Title {
+    font-size:50px;
+    padding-bottom: 100px;
+}
+.movieContainer {
+
+    padding-top: 40px;
+    display: flex;
+    flex-direction: row;
+
+
+    font-size: 30px;
+    /*border: solid 1px white;*/
+}
+
+.movieContainer img {
+    width: 100%;
+    padding-left: 35px;
+    min-width: 400px;
+    max-width: 500px;
+
+}
+
+.movieInfo{
+    padding-left:25px;
+    min-width: 850px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
+
+}

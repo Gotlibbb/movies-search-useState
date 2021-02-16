@@ -15,6 +15,7 @@ export const App = () => {
     let [searchResult, setSearchResult] = useState<JSX.Element[] | string>("")
 
 
+
     const searchingFilm = (page?: string) => {
 
         API.searchFilmsByName(filmName.trim(), page).then(
@@ -64,6 +65,7 @@ export const App = () => {
     let [Type, setType] = useState("")
     let [BoxOffice, setBoxOffice] = useState("")
     let [Production, setProduction] = useState("")
+    let preloader = false;
 
     const viewMovie = (filmId: string) => {
 
