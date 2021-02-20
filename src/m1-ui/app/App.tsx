@@ -1,54 +1,13 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import style from './App.module.css';
 import {API} from "../../m2-dal/api";
 import {Route, Switch} from "react-router-dom";
 import {NotFound} from "../components/NotFound";
 import {SearchComponent} from "../components/SearchComponent";
 import {MovieComponent} from "../components/MovieComponent";
-import {FilmPreview, MoviePreviewType} from "../components/FilmPreview";
 
 
 export const App = () => {
-//-----------------------------------------------------------------------
-    let [filmName, setFilmName] = useState<string>("")
-    let [error, setError] = useState<boolean>(false)
-    let [searchResult, setSearchResult] = useState<JSX.Element[] | string>("")
-
-
-
-    const searchingFilm = (page?: string) => {
-
-        API.searchFilmsByName(filmName.trim(), page).then(
-            (res: ResponseType) => {
-                console.log(res)
-
-                if (res.Error) {
-                    setError(true)
-                    setSearchResult(`"` + filmName.trim() + `"` + " " + res.Error)
-
-                } else {
-
-
-                    let ind = 0;
-                    setSearchResult(
-                        res.Search.map(
-                            (el) => {
-                                return <FilmPreview key={ind += 1} viewMovie={viewMovie} imdbID={el.imdbID}
-                                                    Poster={el.Poster}
-                                                    Title={el.Title} Type={el.Type} Year={el.Year}/>
-
-                            })
-                    )
-
-                }
-            }
-        )
-        //setFilmName("")
-
-    }
-//-----------------------------------------------------------------------
-
-
     let [title, setTitle] = useState("")
     let [Year, setYear] = useState("")
     let [Runtime, setRuntime] = useState("")
@@ -65,13 +24,18 @@ export const App = () => {
     let [Type, setType] = useState("")
     let [BoxOffice, setBoxOffice] = useState("")
     let [Production, setProduction] = useState("")
-    let preloader = false;
 
-    const viewMovie = (filmId: string) => {
+    let [preloader, setPreloader] = useState(false) ;
+
+
+    const viewMovie = useCallback((filmId: string) => {
+        setPreloader(  true)
 
         API.searchFilmsByImdbId(filmId).then(
             (res) => {
-                console.log(res)
+
+                setPreloader(  false)
+                // console.log(res)
                 setTitle(res.data.Title)
                 setYear(res.data.Year)
                 setRuntime(res.data.Runtime)
@@ -92,38 +56,38 @@ export const App = () => {
         )
 //-----------------------------------------------------------------------
 
-    }
+    },[])
 
     return <div className={style.searchingContainer}>
         <div className={style.logo}><h1>Movies_Search</h1></div>
 
         <Switch>
-            <Route exact path='/'>
-                <SearchComponent filmName={filmName}
-                                 setFilmName={setFilmName}
-                                 searchResult={searchResult}
-                                 searchingFilm={searchingFilm}
-                />
+            <Route exact path={'/'}>
+                <SearchComponent
+                    preloader={preloader}
+                    setPreloader={setPreloader}
+                    viewMovie={viewMovie}/>
             </Route>
-            <Route path='/movie/:id'>
-                <MovieComponent
-                    Title={title}
-                    imdbID={imdbID}
-                    Year={Year}
-                    Type={Type}
-                    Poster={Poster}
-                    Actors={Actors}
-                    BoxOffice={BoxOffice}
-                    Director={Director}
-                    Country={Country}
-                    Genre={Genre}
-                    imdbRating={imdbRating}
-                    Language={Language}
-                    Plot={Plot}
-                    Production={Production}
-                    Runtime={Runtime}
-                    Writer={Writer}
-                />
+            <Route path={'/movie/:id'}>
+                    <MovieComponent
+                        preloader={preloader}
+                        Title={title}
+                        imdbID={imdbID}
+                        Year={Year}
+                        Type={Type}
+                        Poster={Poster}
+                        Actors={Actors}
+                        BoxOffice={BoxOffice}
+                        Director={Director}
+                        Country={Country}
+                        Genre={Genre}
+                        imdbRating={imdbRating}
+                        Language={Language}
+                        Plot={Plot}
+                        Production={Production}
+                        Runtime={Runtime}
+                        Writer={Writer}
+                    />
             </Route>
             <Route><NotFound/></Route>
         </Switch>
@@ -132,15 +96,5 @@ export const App = () => {
 
 }
 
-
-
-
-
-type ResponseType = {
-    Error?: string
-    Response: string
-    Search: MoviePreviewType[]
-    totalResults: string
-}
 
 

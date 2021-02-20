@@ -4,11 +4,12 @@ import React from "react";
 
 export const FilmPreview = (props: MoviePreviewType) => {
 
+
     return <div className={style.filmPreview}>
 
         <NavLink to={`/movie/` + props.imdbID} onClick={() => props.viewMovie(props.imdbID)}>
             <div className={style.Title}>{props.Title}</div>
-            <img src={props.Poster}/>
+            <img src={props.Poster} alt={"preloader"}/>
         </NavLink>
         <div className={style.Year}>Year: {props.Year}</div>
         <div className={style.Type}>Type: {props.Type}</div>
