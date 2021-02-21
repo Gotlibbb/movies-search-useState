@@ -8,6 +8,7 @@ export const SearchComponent = React.memo((props: SearchComponentPropsType) => {
     let [currentPage, setCurrentPage] = useState<number>(1)
 
 
+
     return <div className={style.searchingBlock}>
         <div className={style.inputZone}>
             <input type={"text"}

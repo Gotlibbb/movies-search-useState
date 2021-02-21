@@ -81,7 +81,7 @@ export const App = () => {
 
     const viewMovie = useCallback((filmId: string) => {
         setPreloader(true)
-
+debugger
         API.searchFilmsByImdbId(filmId).then(
             (res) => {
 
@@ -113,7 +113,7 @@ export const App = () => {
         <div className={style.logo}><h1>Movies_Search</h1></div>
 
         <Switch>
-            <Route path={'/'}>
+            <Route exact path={'/'}>
                 <SearchComponent
                     filmName={filmName}
                     searchingFilm={searchingFilm}
@@ -124,7 +124,7 @@ export const App = () => {
                     setPreloader={setPreloader}
                     viewMovie={viewMovie}/>
             </Route>
-            <Route exact path={'/movie/:id'}>
+            <Route  path={'/movie/:movieId'}>
                 <MovieComponent
                     preloader={preloader}
                     Title={title}
@@ -144,6 +144,7 @@ export const App = () => {
                     Runtime={Runtime}
                     Writer={Writer}
                 />
+
             </Route>
             <Route><NotFound/></Route>
         </Switch>
