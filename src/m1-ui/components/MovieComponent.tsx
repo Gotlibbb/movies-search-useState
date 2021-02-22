@@ -15,7 +15,7 @@ export const MovieComponent = React.memo((props: MoviePropsType) => {
     if (props.preloader) return <Preloader/>
 
     return <div className={style.moviePage}>
-        <NavLink to={"/search-results/" + url.filmNameUrl + `/` + props.currentPage}>⇦ Back to search</NavLink>
+        <NavLink to={"/movies-search-useState/search-results/" + url.filmNameUrl + `/` + props.currentPage}>⇦ Back to search</NavLink>
         <div className={style.movieContainer}>
             <img src={props.Poster} alt={"poster"}/>
             <div className={style.movieInfo}>

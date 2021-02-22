@@ -126,7 +126,7 @@ export const App = React.memo(() => {
 
 
 
-            <Route path={'/search-results/:filmNameUrl/:page'}>
+            <Route path={'/movies-search-useState/search-results/:filmNameUrl/:page'}>
 
                 <SearchResults
                     setFilmName={setFilmName}
@@ -141,7 +141,7 @@ export const App = React.memo(() => {
                 />
 
             </Route>
-            <Route path={'/movie/:filmNameUrl/:movieId'}>
+            <Route path={'/movies-search-useState/movie/:filmNameUrl/:movieId'}>
                 <MovieComponent
                     setFilmName={setFilmName}
                     preloader={preloader}

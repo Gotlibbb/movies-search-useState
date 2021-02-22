@@ -6,7 +6,7 @@ export const FilmPreview = (props: MoviePreviewPropsType) => {
 
     return <div className={style.filmPreview}>
 
-        <NavLink to={`/movie/` + props.filmName + `/` + props.imdbID} onClick={() => props.viewMovie(props.imdbID)}>
+        <NavLink to={`/movies-search-useState/movie/` + props.filmName + `/` + props.imdbID} onClick={() => props.viewMovie(props.imdbID)}>
             <div className={style.Title}>{props.Title}</div>
             <img src={props.Poster} alt={"poster"}/>
         </NavLink>

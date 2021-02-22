@@ -15,7 +15,7 @@ export const SearchComponent = React.memo((props: SearchComponentPropsType) => {
                    onChange={(e) => props.setFilmName(e.target.value)}
                    onKeyPress={(e) => {
                        if (e.key === "Enter") {
-                           history.push(`/search-results/` + props.filmName + `/` + props.currentPage)
+                           history.push(`/movies-search-useState/search-results/` + props.filmName + `/` + props.currentPage)
                            props.searchingFilm()
                            props.setCurrentPage(1)
                        }
@@ -25,7 +25,7 @@ export const SearchComponent = React.memo((props: SearchComponentPropsType) => {
             <button onClick={() => {
                 props.searchingFilm()
                 props.setCurrentPage(1)
-                history.push(`/search-results/` + props.filmName + `/` + 1)
+                history.push(`/movies-search-useState/search-results/` + props.filmName + `/` + 1)
 
             }}>Search
             </button>

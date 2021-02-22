@@ -16,7 +16,7 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
         pages.push(i)
     }
     const pushUrl = (page: number) => {
-        history.push(`/search-results/` + props.filmName + `/` + String(page))
+        history.push(`/movies-search-useState/search-results/` + props.filmName + `/` + String(page))
     }
 
 
