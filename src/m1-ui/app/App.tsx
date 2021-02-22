@@ -2,30 +2,34 @@ import React, {useCallback, useState} from 'react';
 import style from './App.module.css';
 import {API} from "../../m2-dal/api";
 import {Route, Switch} from "react-router-dom";
-import {NotFound} from "../components/NotFound";
 import {SearchComponent} from "../components/SearchComponent";
 import {MovieComponent} from "../components/MovieComponent";
-import {FilmPreview, MoviePreviewType} from "../components/FilmPreview";
+import {FilmPreview, MoviePreviewPropsType} from "../components/FilmPreview";
+import {SearchResults} from "../components/SearchResults";
 
 
-export const App = () => {
+export const App = React.memo(() => {
 
 
-    let [filmName, setFilmName] = useState<string>(" ")
+    let [filmName, setFilmName] = useState<string>("")
     let [searchResult, setSearchResult] = useState<JSX.Element[] | string>()
     let [totalResults, setTotalResults] = useState<string | undefined>("")
+    let [currentPage, setCurrentPage] = useState<number>(1)
     let [preloader, setPreloader] = useState(false);
 
-    const searchingFilm = useCallback((page?: string) => {
+
+    const searchingFilm = useCallback((page?: string, filmPar?: string) => {
         setPreloader(true)
-        API.searchFilmsByName(filmName.trim(), page).then(
+        let film = filmPar ? filmPar : filmName
+
+        API.searchFilmsByName(film.trim(), page).then(
             (res: ResponseType) => {
-                //console.log(res)
+
                 setTotalResults(res.totalResults)
 
                 if (res.Error) {
                     setPreloader(false)
-                    setSearchResult(`"` + filmName.trim() + `" - ` + res.Error.toLowerCase())
+                    setSearchResult(`"` + film.trim() + `" - ` + res.Error.toLowerCase())
 
                 }
                 if (!res.Error) {
@@ -36,6 +40,7 @@ export const App = () => {
                         res.Search.map(
                             (el) => {
                                 return <FilmPreview key={ind += 1}
+                                                    filmName={filmName}
                                                     viewMovie={viewMovie}
                                                     imdbID={el.imdbID}
                                                     Poster={el.Poster}
@@ -55,11 +60,9 @@ export const App = () => {
     type ResponseType = {
         Error?: string
         Response: string
-        Search: MoviePreviewType[]
+        Search: MoviePreviewPropsType[]
         totalResults: string
     }
-
-
     //-----------------------------------------------------
     let [title, setTitle] = useState("")
     let [Year, setYear] = useState("")
@@ -76,17 +79,17 @@ export const App = () => {
     let [imdbID, setimdbID] = useState("")
     let [Type, setType] = useState("")
     let [BoxOffice, setBoxOffice] = useState("")
+
+
     let [Production, setProduction] = useState("")
-
-
     const viewMovie = useCallback((filmId: string) => {
         setPreloader(true)
-debugger
+
         API.searchFilmsByImdbId(filmId).then(
             (res) => {
 
                 setPreloader(false)
-                // console.log(res)
+
                 setTitle(res.data.Title)
                 setYear(res.data.Year)
                 setRuntime(res.data.Runtime)
@@ -111,21 +114,36 @@ debugger
 
     return <div className={style.searchingContainer}>
         <div className={style.logo}><h1>Movies_Search</h1></div>
+        <SearchComponent
+            currentPage={currentPage}
+            filmName={filmName}
+            searchingFilm={searchingFilm}
+            setFilmName={setFilmName}
+            setCurrentPage={setCurrentPage}
+        />
 
         <Switch>
-            <Route exact path={'/'}>
-                <SearchComponent
-                    filmName={filmName}
-                    searchingFilm={searchingFilm}
+
+
+
+            <Route path={'/search-results/:filmNameUrl/:page'}>
+
+                <SearchResults
                     setFilmName={setFilmName}
+                    searchingFilm={searchingFilm}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
                     searchResult={searchResult}
                     totalResults={totalResults}
                     preloader={preloader}
-                    setPreloader={setPreloader}
-                    viewMovie={viewMovie}/>
+                    filmName={filmName}
+
+                />
+
             </Route>
-            <Route  path={'/movie/:movieId'}>
+            <Route path={'/movie/:filmNameUrl/:movieId'}>
                 <MovieComponent
+                    setFilmName={setFilmName}
                     preloader={preloader}
                     Title={title}
                     imdbID={imdbID}
@@ -143,15 +161,16 @@ debugger
                     Production={Production}
                     Runtime={Runtime}
                     Writer={Writer}
+                    viewMovie={viewMovie}
+                    currentPage={currentPage}
                 />
 
             </Route>
-            <Route><NotFound/></Route>
         </Switch>
 
     </div>
 
-}
+})
 
 
 

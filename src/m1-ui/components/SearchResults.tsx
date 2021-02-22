@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import style from "../app/App.module.css";
 import {Pagination} from "./Pagination";
 import {Preloader} from "../assets/Preloader";
@@ -6,17 +6,16 @@ import {useParams} from "react-router-dom";
 
 
 export const SearchResults = React.memo((props: SearchResultsPropsType) => {
-let film : {filmName: string} = useParams()
-    console.log(film)
 
-    // useEffect(()=>{
-    //     debugger
-    //     props.searchingFilm( String(props.currentPage), film.filmName)
-    // },[])
+    let url: { filmNameUrl: string, page: string } = useParams()
 
 
+    useEffect(() => {
 
-
+        props.setCurrentPage(Number(url.page))
+        props.setFilmName(url.filmNameUrl)
+        props.searchingFilm(url.page, url.filmNameUrl)
+    }, [])
 
 
     return <div className={style.searchingBlock}>
@@ -29,6 +28,9 @@ let film : {filmName: string} = useParams()
                         totalResults={props.totalResults}
                         currentPage={props.currentPage}
                         setCurrentPage={props.setCurrentPage}
+                        filmName={props.filmName}
+
+
             />
 
             {props.preloader ? <Preloader/> :
@@ -41,6 +43,7 @@ let film : {filmName: string} = useParams()
                         onlySwitch={true}
                         currentPage={props.currentPage}
                         setCurrentPage={props.setCurrentPage}
+                        filmName={props.filmName}
             />
 
         </div>
@@ -49,19 +52,14 @@ let film : {filmName: string} = useParams()
 
 
 type SearchResultsPropsType = {
-    setPreloader: (preloader: boolean) => void
     preloader: boolean
-    viewMovie: (filmId: string) => void
-
     setCurrentPage: (page: number) => void
     currentPage: number
-
-    searchResult: JSX.Element[] | string
+    searchResult: JSX.Element[] | string | undefined
     totalResults: string | undefined
-    searchingFilm: (  page?: string ) => void
+    searchingFilm: (page?: string, filmPar?: string) => void
+    setFilmName: (filmName: string) => void
     filmName: string
-
-
 
 
 }

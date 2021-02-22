@@ -1,13 +1,10 @@
-import React, {useState} from "react";
+import React from "react";
+import {useHistory} from "react-router-dom";
 import style from "../app/App.module.css";
-import {Pagination} from "./Pagination";
-import {Preloader} from "../assets/Preloader";
 
 
 export const SearchComponent = React.memo((props: SearchComponentPropsType) => {
-    let [currentPage, setCurrentPage] = useState<number>(1)
-
-
+    let history = useHistory()
 
     return <div className={style.searchingBlock}>
         <div className={style.inputZone}>
@@ -17,46 +14,31 @@ export const SearchComponent = React.memo((props: SearchComponentPropsType) => {
                    value={props.filmName}
                    onChange={(e) => props.setFilmName(e.target.value)}
                    onKeyPress={(e) => {
-                       if (e.key === "Enter") props.searchingFilm()
+                       if (e.key === "Enter") {
+                           history.push(`/search-results/` + props.filmName + `/` + props.currentPage)
+                           props.searchingFilm()
+                           props.setCurrentPage(1)
+                       }
                    }}
             />
 
-            <button onClick={() => props.searchingFilm()}>Search</button>
-        </div>
-        <div className={style.searchResult}>
+            <button onClick={() => {
+                props.searchingFilm()
+                props.setCurrentPage(1)
+                history.push(`/search-results/` + props.filmName + `/` + 1)
 
-
-            <Pagination searchingFilm={props.searchingFilm}
-                        totalResults={props.totalResults}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-            />
-
-            {props.preloader ? <Preloader/> :
-                <div className={style.searchResult}>
-                    {props.searchResult}
-                </div>
-            }
-            <Pagination searchingFilm={props.searchingFilm}
-                        totalResults={props.totalResults}
-                        onlySwitch={true}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-            />
-
+            }}>Search
+            </button>
         </div>
     </div>
 })
 
 type SearchComponentPropsType = {
-    setPreloader: (preloader: boolean) => void
-    preloader: boolean
-    viewMovie: (filmId: string) => void
 
     filmName: string
     setFilmName: (filmName: string) => void
     searchingFilm: () => void
-    totalResults: string | undefined
-    searchResult: JSX.Element[] | string | undefined
+    setCurrentPage: (page: number) => void
+    currentPage: number
 }
 

@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 import style from "../app/App.module.css";
+import {useHistory} from "react-router-dom";
 
 
 export const Pagination = React.memo((props: PaginationPropsType) => {
 
     let [inputPage, setInputPage] = useState<string>()
-
+    let history = useHistory()
     let pageSize = 10
     let pageCount: number | undefined = Math.ceil(Number(props.totalResults) / pageSize);
 
@@ -14,8 +15,9 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
     for (let i = 0; i <= pageCount; i++) {
         pages.push(i)
     }
-
-
+    const pushUrl = (page: number) => {
+        history.push(`/search-results/` + props.filmName + `/` + String(page))
+    }
 
 
     if (pageCount >= 10) {
@@ -24,13 +26,13 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
 
         return <div
             className={style.toggleBlock}
-            style={props.onlySwitch?{justifyContent:"center", paddingLeft: "75px"}: {}}
+            style={props.onlySwitch ? {justifyContent: "center", paddingLeft: "75px"} : {}}
         >
             <div
                 className={style.changePage}
                 hidden={props.onlySwitch}
             >
-                <div hidden={props.onlySwitch}>Change page: </div>
+                <div hidden={props.onlySwitch}>Change page:</div>
                 <input hidden={props.onlySwitch} type="number" value={inputPage}
                        onChange={(e) => {
                            setInputPage(e.currentTarget.value)
@@ -41,6 +43,7 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
                            if (e.key === "Enter" && !errorInput) {
                                props.setCurrentPage(Number(inputPage))
                                props.searchingFilm(inputPage)
+                               pushUrl(Number(inputPage))
 
                            }
 
@@ -48,10 +51,11 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
                 />
 
                 <button hidden={props.onlySwitch}
-                    onClick={() => {
-                    props.setCurrentPage(Number(inputPage))
-                    props.searchingFilm(inputPage)
-                }}
+                        onClick={() => {
+                            props.setCurrentPage(Number(inputPage))
+                            props.searchingFilm(inputPage)
+                            pushUrl(Number(inputPage))
+                        }}
                         disabled={errorInput}
                 >↪
                 </button>
@@ -61,36 +65,36 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
                 className={style.pageToggle}
 
             >
-                {props.currentPage !== 1 && <button onClick={() => {
-                    props.onlySwitch&&window.scrollTo(0, 300)
+                {props.currentPage !== 1 &&
+                <button onClick={() => {
+                    props.onlySwitch && window.scrollTo(0, 300)
                     props.setCurrentPage(pages[props.currentPage - 1])
                     props.searchingFilm(String(props.currentPage - 1))
+                    pushUrl(props.currentPage - 1)
 
 
-
-                }}>⇐...prev page </button>}
+                }}>⇐...prev </button>}
                 <div className={style.currentPage}> {props.currentPage} </div>
                 <button
                     disabled={errorButton}
                     onClick={() => {
-                        props.onlySwitch&&window.scrollTo(0, 300)
+                        props.onlySwitch && window.scrollTo(0, 300)
                         props.setCurrentPage(pages[props.currentPage + 1])
                         props.searchingFilm(String(props.currentPage + 1))
+                        pushUrl(props.currentPage + 1)
 
 
-                    }}> next page...⇒
+                    }}> next...⇒
                 </button>
             </div>
-
-
-
 
             <div
                 className={style.totalPage}
                 hidden={props.onlySwitch}
-            >Total pages: {pages.length -1 }</div>
-
+            >Total pages: {pages.length - 1}</div>
         </div>
+
+
     }
 
 
@@ -103,6 +107,7 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
                              () => {
                                  props.setCurrentPage(p)
                                  props.searchingFilm(String(p))
+                                 pushUrl(p)
                              }
                          }>
                 {p}
@@ -115,9 +120,10 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
 type PaginationPropsType = {
     searchingFilm: (page?: string) => void
     totalResults: string | undefined
-    setCurrentPage : ( currentPage: number)=> void
+    setCurrentPage: (currentPage: number) => void
     currentPage: number
     onlySwitch?: boolean
+    filmName: string
 
 
 }

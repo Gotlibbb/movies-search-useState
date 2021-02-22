@@ -1,15 +1,21 @@
-import {NotFound} from "./NotFound";
 import style from "../app/App.module.css";
-import React from "react";
-import {NavLink} from "react-router-dom";
+import React, {useEffect} from "react";
+import {NavLink, useParams} from "react-router-dom";
 import {Preloader} from "../assets/Preloader";
 
 export const MovieComponent = React.memo((props: MoviePropsType) => {
-    if (!props.Title) return <NotFound/>
+    let url: { movieId: string, filmNameUrl: string } = useParams()
+
+    useEffect(() => {
+        props.setFilmName(url.filmNameUrl)
+        props.viewMovie(url.movieId)
+
+    }, [])
+
     if (props.preloader) return <Preloader/>
 
     return <div className={style.moviePage}>
-        <NavLink to={"/"}>⇦ Back to search</NavLink>
+        <NavLink to={"/search-results/" + url.filmNameUrl + `/` + props.currentPage}>⇦ Back to search</NavLink>
         <div className={style.movieContainer}>
             <img src={props.Poster} alt={"poster"}/>
             <div className={style.movieInfo}>
@@ -32,7 +38,6 @@ export const MovieComponent = React.memo((props: MoviePropsType) => {
     </div>
 
 })
-
 
 
 type MoviePropsType = {
@@ -62,4 +67,7 @@ type MoviePropsType = {
     Production?: string
     Website?: string
     Response?: string
+    viewMovie: (filmId: string) => void
+    setFilmName: (filmName: string) => void
+    currentPage: number
 }
