@@ -1,7 +1,7 @@
 import axios from  "axios";
 
 const instance = {
-    baseURL: 'http://www.omdbapi.com/',
+    baseURL: 'https://www.omdbapi.com/',
 
 };
 const apikey = '&apikey=ff4140ae';
