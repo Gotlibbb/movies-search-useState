@@ -6,6 +6,13 @@ import style from "../app/App.module.css";
 export const SearchComponent = React.memo((props: SearchComponentPropsType) => {
     let history = useHistory()
 
+    const onClickSearchButton = () => {
+        props.searchingFilm()
+        props.setCurrentPage(1)
+        history.push(`/movies-search-useState/search-results/` + props.filmName + `/` + props.currentPage)
+    }
+
+
     return <div className={style.searchingBlock}>
         <div className={style.inputZone}>
             <input type={"text"}
@@ -13,21 +20,10 @@ export const SearchComponent = React.memo((props: SearchComponentPropsType) => {
                    placeholder={"Enter name of movie "}
                    value={props.filmName}
                    onChange={(e) => props.setFilmName(e.target.value)}
-                   onKeyPress={(e) => {
-                       if (e.key === "Enter") {
-                           history.push(`/movies-search-useState/search-results/` + props.filmName + `/` + props.currentPage)
-                           props.searchingFilm()
-                           props.setCurrentPage(1)
-                       }
-                   }}
+                   onKeyPress={(e) => {e.key === "Enter" && onClickSearchButton()}}
             />
 
-            <button onClick={() => {
-                props.searchingFilm()
-                props.setCurrentPage(1)
-                history.push(`/movies-search-useState/search-results/` + props.filmName + `/` + 1)
-
-            }}>Search
+            <button onClick={onClickSearchButton}>Search
             </button>
         </div>
     </div>
