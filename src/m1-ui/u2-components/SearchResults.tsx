@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import style from "../app/App.module.css";
+import style from "../u3-css/c3-Results.module.css"
 import {Pagination} from "./Pagination";
-import {Preloader} from "../assets/Preloader";
+import {Preloader} from "../u4-assets/Preloader";
 import {useParams} from "react-router-dom";
 
 
@@ -18,10 +18,8 @@ export const SearchResults = React.memo((props: SearchResultsPropsType) => {
     }, [])
 
 
-    return <div className={style.searchingBlock}>
+    return <div className={style.resultsContainer}>
 
-
-        <div className={style.searchResult}>
 
 
             <Pagination searchingFilm={props.searchingFilm}
@@ -34,7 +32,7 @@ export const SearchResults = React.memo((props: SearchResultsPropsType) => {
             />
 
             {props.preloader ? <Preloader/> :
-                <div className={style.searchResult}>
+                <div className={style.resultsBlock}>
                     {props.searchResult}
                 </div>
             }
@@ -46,7 +44,6 @@ export const SearchResults = React.memo((props: SearchResultsPropsType) => {
                         filmName={props.filmName}
             />
 
-        </div>
     </div>
 })
 

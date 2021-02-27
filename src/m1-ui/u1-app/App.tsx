@@ -1,11 +1,11 @@
 import React, {useCallback, useState} from 'react';
-import style from './App.module.css';
+import style from '../u3-css/c1-App.module.css';
 import {API} from "../../m2-dal/api";
 import {Route, Switch} from "react-router-dom";
-import {SearchComponent} from "../components/SearchComponent";
-import {MovieComponent} from "../components/MovieComponent";
-import {FilmPreview, MoviePreviewPropsType} from "../components/FilmPreview";
-import {SearchResults} from "../components/SearchResults";
+import {SearchComponent} from "../u2-components/SearchComponent";
+import {MovieComponent} from "../u2-components/MovieComponent";
+import {FilmPreview, MoviePreviewPropsType} from "../u2-components/FilmPreview";
+import {SearchResults} from "../u2-components/SearchResults";
 
 
 export const App = React.memo(() => {
@@ -69,7 +69,6 @@ export const App = React.memo(() => {
     let [Runtime, setRuntime] = useState("")
     let [Genre, setGenre] = useState("")
     let [Director, setDirector] = useState("")
-    let [Writer, setWriter] = useState("")
     let [Actors, setActors] = useState("")
     let [Plot, setPlot] = useState("")
     let [Language, setLanguage] = useState("")
@@ -95,7 +94,6 @@ export const App = React.memo(() => {
                 setRuntime(res.data.Runtime)
                 setGenre(res.data.Genre)
                 setDirector(res.data.Director)
-                setWriter(res.data.Writer)
                 setActors(res.data.Actors)
                 setPlot(res.data.Plot)
                 setLanguage(res.data.Language)
@@ -112,8 +110,8 @@ export const App = React.memo(() => {
 
     }, [])
 
-    return <div className={style.searchingContainer}>
-        <div className={style.logo}><h1>Movies_Search</h1></div>
+    return <div className={style.app}>
+
         <SearchComponent
             currentPage={currentPage}
             filmName={filmName}
@@ -160,7 +158,6 @@ export const App = React.memo(() => {
                     Plot={Plot}
                     Production={Production}
                     Runtime={Runtime}
-                    Writer={Writer}
                     viewMovie={viewMovie}
                     currentPage={currentPage}
                 />

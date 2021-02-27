@@ -1,4 +1,4 @@
-import preloader from "../images/151.gif";
+import preloader from "../u5-images/151.gif";
 import React from "react";
 
 export const Preloader = () => {
