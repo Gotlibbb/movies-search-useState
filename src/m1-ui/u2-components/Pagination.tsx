@@ -26,7 +26,7 @@ export const Pagination = React.memo((props: PaginationPropsType) => {
 
         return <div
             className={style.toggleBlock}
-            style={props.onlySwitch ? {justifyContent: "center", paddingLeft: "75px"} : {}}
+            style={props.onlySwitch ? {justifyContent: "center"} : {}}
         >
             <div
                 className={style.changePage}
