@@ -10,60 +10,8 @@ import {SearchResults} from "../u2-components/SearchResults";
 
 export const App = React.memo(() => {
 
+    console.log("app render")
 
-    let [filmName, setFilmName] = useState<string>("")
-    let [searchResult, setSearchResult] = useState<JSX.Element[] | string>()
-    let [totalResults, setTotalResults] = useState<string | undefined>("")
-    let [currentPage, setCurrentPage] = useState<number>(1)
-    let [preloader, setPreloader] = useState(false);
-
-
-    const searchingFilm = useCallback((page?: string, filmPar?: string) => {
-        setPreloader(true)
-        let film = filmPar ? filmPar : filmName
-
-        API.searchFilmsByName(film.trim(), page).then(
-            (res: ResponseType) => {
-
-                setTotalResults(res.totalResults)
-
-                if (res.Error) {
-                    setPreloader(false)
-                    setSearchResult(`"` + film.trim() + `" - ` + res.Error.toLowerCase())
-
-                }
-                if (!res.Error) {
-                    setPreloader(false)
-
-                    let ind = 0;
-                    setSearchResult(
-                        res.Search.map(
-                            (el) => {
-                                return <FilmPreview key={ind += 1}
-                                                    filmName={filmName}
-                                                    viewMovie={viewMovie}
-                                                    imdbID={el.imdbID}
-                                                    Poster={el.Poster}
-                                                    Title={el.Title} Type={el.Type} Year={el.Year}/>
-
-                            })
-                    )
-
-                }
-            }
-        )
-
-
-    }, [filmName, setTotalResults, setSearchResult])
-
-
-    type ResponseType = {
-        Error?: string
-        Response: string
-        Search: MoviePreviewPropsType[]
-        totalResults: string
-    }
-    //-----------------------------------------------------
     let [title, setTitle] = useState("")
     let [Year, setYear] = useState("")
     let [Runtime, setRuntime] = useState("")
@@ -106,9 +54,63 @@ export const App = React.memo(() => {
                 setProduction(res.data.Production)
             }
         )
-//-----------------------------------------------------------------------
 
     }, [])
+
+
+    let [filmName, setFilmName] = useState<string>("")
+    let [searchResult, setSearchResult] = useState<JSX.Element[] | string>()
+    let [totalResults, setTotalResults] = useState<string | undefined>("")
+    let [currentPage, setCurrentPage] = useState<number>(1)
+    let [preloader, setPreloader] = useState(false);
+
+
+    const searchingFilm = useCallback((page?: string, filmPar?: string) => {
+        setPreloader(true)
+        let film = filmPar ? filmPar : filmName
+
+        API.searchFilmsByName(film.trim(), page).then(
+            (res: ResponseType) => {
+
+                setTotalResults(res.totalResults)
+
+                if (res.Error) {
+                    setPreloader(false)
+                    setSearchResult(`"` + film.trim() + `" - ` + res.Error.toLowerCase())
+
+                }
+                if (!res.Error) {
+                    setPreloader(false)
+
+                    setSearchResult(
+                        res.Search.map(
+                            (el, i) => {
+                                return <FilmPreview key={i}
+                                                    filmName={filmName}
+                                                    viewMovie={viewMovie}
+                                                    imdbID={el.imdbID}
+                                                    Poster={el.Poster}
+                                                    Title={el.Title} Type={el.Type} Year={el.Year}/>
+
+                            })
+                    )
+
+                }
+            }
+        )
+
+
+    }, [filmName, viewMovie, setTotalResults, setSearchResult])
+
+
+    type ResponseType = {
+        Error?: string
+        Response: string
+        Search: MoviePreviewPropsType[]
+        totalResults: string
+    }
+    //-----------------------------------------------------
+
 
     return <div className={style.app}>
 
@@ -121,7 +123,6 @@ export const App = React.memo(() => {
         />
 
         <Switch>
-
 
 
             <Route path={'/movies-search-useState/search-results/:filmNameUrl/:page'}>
@@ -168,6 +169,8 @@ export const App = React.memo(() => {
     </div>
 
 })
+
+
 
 
 

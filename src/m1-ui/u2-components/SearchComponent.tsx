@@ -12,7 +12,7 @@ export const SearchComponent = React.memo((props: SearchComponentPropsType) => {
         history.push(`/movies-search-useState/search-results/` + props.filmName + `/` + props.currentPage)
     }
 
-
+    console.log("SearchComponent render")
     return <div className={style.searchContainer}>
 
         <div className={style.logo}><h1>Movies_Search</h1></div>
